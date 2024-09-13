@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Acid-Base Reaction Simulation</title>
+    <style>
+        /* Styling for the simulation */
+        body {
+            background-color: #f0f0f0;
+            background-image: url('https://example.com/chemistry_lab_background.jpg'); /* Replace with an actual lab image URL */
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        #simulationContainer {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            margin-top: 20px;
+        }
+
+        .beaker {
+            width: 80px;
+            height: 150px;
+            border: 2px solid #333;
+            border-bottom: 0;
+            border-radius: 0 0 50% 50%;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .beaker-label {
+            text-align: center;
+            font-weight: bold;
+            color: #000;
+            margin-top: 5px;
+        }
+
+        .liquid {
+            width: 100%;
+            height: 0;
+            background-color: transparent;
+            position: absolute;
+            bottom: 0;
+            transition: height 1s ease;
+        }
+
+        #controls {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        select, button {
+            padding: 5px;
+            font-size: 14px;
+        }
+
+        #reactionInfo {
+            margin-top: 20px;
+            text-align: center;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align:center; color:black;">Acid-Base Reaction Simulation</h2>
+    <div id="simulationContainer">
+        <div class="beaker" id="beakerA">
+            <div class="liquid" id="liquidA"></div>
+            <div class="beaker-label" id="labelA"></div>
+        </div>
+        <div class="beaker" id="beakerB">
+            <div class="liquid" id="liquidB"></div>
+            <div class="beaker-label" id="labelB"></div>
+        </div>
+        <div class="beaker" id="beakerC">
+            <div class="liquid" id="liquidC"></div>
+            <div class="beaker-label" id="labelC">Output</div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <table>
+            <tr>
+                <td>
+                    <label for="acidSelect">Select Acid:</label>
+                    <select id="acidSelect">
+                        <option value="HCl">Hydrochloric Acid (HCl)</option>
+                        <option value="H2SO4">Sulfuric Acid (H2SO4)</option>
+                        <option value="CH3COOH">Acetic Acid (CH3COOH)</option>
+                        <option value="HNO3">Nitric Acid (HNO3)</option>
+                        <option value="H3PO4">Phosphoric Acid (H3PO4)</option>
+                        <option value="HF">Hydrofluoric Acid (HF)</option>
+                        <option value="HBr">Hydrobromic Acid (HBr)</option>
+                        <option value="HI">Hydroiodic Acid (HI)</option>
+                        <option value="HClO4">Perchloric Acid (HClO4)</option>
+                        <option value="H2CO3">Carbonic Acid (H2CO3)</option>
+                        <option value="H2CrO4">Chromic Acid (H2CrO4)</option>
+                        <option value="H2C2O4">Oxalic Acid (H2C2O4)</option>
+                        <option value="H2SeO4">Selenic Acid (H2SeO4)</option>
+                        <option value="HCOOH">Formic Acid (HCOOH)</option>
+                        <option value="C6H5COOH">Benzoic Acid (C6H5COOH)</option>
+                        <option value="H2S">Hydrosulfuric Acid (H2S)</option>
+                        <option value="HCN">Hydrocyanic Acid (HCN)</option>
+                        <option value="H2SO3">Sulfurous Acid (H2SO3)</option>
+                        <option value="HClO3">Chloric Acid (HClO3)</option>
+                        <option value="H3AsO4">Arsenic Acid (H3AsO4)</option>
+                    </select>
+                </td>
+                <td>
+                    <label for="acidVolume">Select Acid Volume (mL):</label>
+                    <select id="acidVolume">
+                        <option value="10">10 mL</option>
+                        <option value="20">20 mL</option>
+                        <option value="30">30 mL</option>
+                        <option value="40">40 mL</option>
+                        <option value="50">50 mL</option>
+                        <option value="60">60 mL</option>
+                        <option value="70">70 mL</option>
+                        <option value="80">80 mL</option>
+                        <option value="90">90 mL</option>
+                        <option value="100">100 mL</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="baseSelect">Select Base:</label>
+                    <select id="baseSelect">
+                        <option value="NaOH">Sodium Hydroxide (NaOH)</option>
+                        <option value="NH3">Ammonia (NH3)</option>
+                        <option value="Ca(OH)2">Calcium Hydroxide (Ca(OH)2)</option>
+                        <option value="KOH">Potassium Hydroxide (KOH)</option>
+                        <option value="LiOH">Lithium Hydroxide (LiOH)</option>
+                        <option value="Ba(OH)2">Barium Hydroxide (Ba(OH)2)</option>
+                        <option value="Sr(OH)2">Strontium Hydroxide (Sr(OH)2)</option>
+                        <option value="Al(OH)3">Aluminum Hydroxide (Al(OH)3)</option>
+                        <option value="Fe(OH)3">Ferric Hydroxide (Fe(OH)3)</option>
+                        <option value="Cu(OH)2">Copper(II) Hydroxide (Cu(OH)2)</option>
+                        <option value="Zn(OH)2">Zinc Hydroxide (Zn(OH)2)</option>
+                        <option value="AgOH">Silver Hydroxide (AgOH)</option>
+                        <option value="Ni(OH)2">Nickel(II) Hydroxide (Ni(OH)2)</option>
+                        <option value="Mn(OH)2">Manganese(II) Hydroxide (Mn(OH)2)</option>
+                        <option value="Pb(OH)2">Lead(II) Hydroxide (Pb(OH)2)</option>
+                        <option value="Sn(OH)2">Tin(II) Hydroxide (Sn(OH)2)</option>
+                        <option value="Cr(OH)3">Chromium(III) Hydroxide (Cr(OH)3)</option>
+                        <option value="Co(OH)2">Cobalt(II) Hydroxide (Co(OH)2)</option>
+                        <option value="Mg(OH)2">Magnesium Hydroxide (Mg(OH)2)</option>
+                        <option value="Cd(OH)2">Cadmium Hydroxide (Cd(OH)2)</option>
+                    </select>
+                </td>
+                <td>
+                    <label for="baseVolume">Select Base Volume (mL):</label>
+                    <select id="baseVolume">
+                        <option value="10">10 mL</option>
+                        <option value="20">20 mL</option>
+                        <option value="30">30 mL</option>
+                        <option value="40">40 mL</option>
+                        <option value="50">50 mL</option>
+                        <option value="60">60 mL</option>
+                        <option value="70">70 mL</option>
+                        <option value="80">80 mL</option>
+                        <option value="90">90 mL</option>
+                        <option value="100">100 mL</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <button onclick="startReaction()">Start Reaction</button>
+    </div>
+
+    <div id="reactionInfo"></div>
+
+    <script>
+        function startReaction() {
+            const acid = document.getElementById("acidSelect").value;
+            const base = document.getElementById("baseSelect").value;
+            const acidVolume = document.getElementById("acidVolume").value;
+            const baseVolume = document.getElementById("baseVolume").value;
+
+            // Clear previous reaction info
+            document.getElementById("reactionInfo").innerHTML = "";
+
+            // Display labels on beakers
+            document.getElementById("labelA").textContent = `Acid: ${acid} (${acidVolume} mL)`;
+            document.getElementById("labelB").textContent = `Base: ${base} (${baseVolume} mL)`;
+
+            // Animate the addition of acid and base
+            animateLiquid("liquidA", acidVolume, "#FF4500"); // Acid in Beaker A (orange color)
+            animateLiquid("liquidB", baseVolume, "#1E90FF"); // Base in Beaker B (blue color)
+
+            // Determine if a reaction occurs
+            const reaction = determineReaction(acid, base);
+            displayReactionResult(reaction);
+        }
+
+        function animateLiquid(elementId, volume, color) {
+            const liquid = document.getElementById(elementId);
+            liquid.style.height = volume + "px";
+            liquid.style.backgroundColor = color;
+        }
+
+        function determineReaction(acid, base) {
+            // Define possible reactions
+            const reactions = {
+                "HCl-NaOH": { product: "Sodium Chloride (NaCl)", formula: "NaCl", reacts: true },
+                "H2SO4-NaOH": { product: "Sodium Sulfate (Na2SO4)", formula: "Na2SO4", reacts: true },
+                "CH3COOH-NaOH": { product: "Sodium Acetate (CH3COONa)", formula: "CH3COONa", reacts: true },
+                "HCl-NH3": { product: "Ammonium Chloride (NH4Cl)", formula: "NH4Cl", reacts: true },
+                "H2SO4-Ca(OH)2": { product: "Calcium Sulfate (CaSO4)", formula: "CaSO4", reacts: true },
+                "CH3COOH-Ca(OH)2": { product: "Calcium Acetate (Ca(CH3COO)2)", formula: "Ca(CH3COO)2", reacts: true },
+                // No reaction cases
+                "HCl-Ca(OH)2": { reacts: false },
+                "H2SO4-NH3": { reacts: false },
+                "CH3COOH-NH3": { reacts: false }
+            };
+
+            // Generate reaction key
+            const reactionKey = `${acid}-${base}`;
+            return reactions[reactionKey] || { reacts: false };
+        }
+
+        function displayReactionResult(reaction) {
+            const outputBeaker = document.getElementById("liquidC");
+            const info = document.getElementById("reactionInfo");
+
+            if (reaction.reacts) {
+                // Display a green color for a reaction
+                outputBeaker.style.backgroundColor = "green";
+                info.innerHTML = `<p>A reaction occurred!</p>
+                                  <p>Product: ${reaction.product}</p>
+                                  <p>Chemical Formula: ${reaction.formula}</p>`;
+            } else {
+                // Display a blue color for no reaction
+                outputBeaker.style.backgroundColor = "blue";
+                info.innerHTML = `<p>No reaction occurred.</p>`;
+            }
+
+            // Reset output beaker height to full
+            outputBeaker.style.height = "100px";
+        }
+    </script>
+</body>
+</html>
